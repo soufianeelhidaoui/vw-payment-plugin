@@ -1,0 +1,22 @@
+{% extends '@SyliusShop/Checkout/layout.html.twig' %}
+
+{% block title %}Paiement{% endblock %}
+
+{% block content %}
+    <div class="bron">
+        <div class="bron-html">
+            <div class="bron-body">
+                <div class="c-status-message  c-status-message--error" v-if="payment_error">
+                    Erreur de paiement, veuillez réessayer.
+                </div>
+
+                <div id="selector-container"></div>
+                <div id="selection-container"></div> <!-- optional -->
+                <div id="button-container"></div> <!-- optional -->
+                <div id="registration-continue-button-container"></div> <!-- optional -->
+                <div id="payment-continue-button-container"></div> <!-- optional -->
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

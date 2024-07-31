@@ -1,0 +1,3 @@
+alaska_smartpay_plugin:
+  # loads routes from the YAML or XML files found in some bundle directory
+  resource: '@AlaskaSyliusSmartpayPlugin/Resources/config/shop_routing.yml'

@@ -1,0 +1,52 @@
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="Alaska\SyliusSmartpayPlugin\Controller\WebhookController" autowire="true" autoconfigure="true" public="true">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="sylius.http_client" />
+            <argument type="service" id="alaska_smartpay_merchant_service" />
+            <argument type="service" id="sm.factory" />
+            <argument type="service" id="sylius.manager.order" />
+
+        </service>
+
+        <service id="alaska_smartpay_merchant_service" class="Alaska\SyliusSmartpayPlugin\Service\MerchantKeyService">
+            <argument type="service" id="sylius.http_client" />
+            <argument>%sylius_smartpay.kvps_base_url%</argument>
+        </service>
+
+        <service id="app.sylius_payment" class="Payum\Core\Bridge\Symfony\Builder\GatewayFactoryBuilder">
+            <argument>Alaska\SyliusSmartpayPlugin\Payum\SyliusPaymentGatewayFactory</argument>
+            <tag name="payum.gateway_factory_builder" factory="smartpay_payment" />
+        </service>
+
+        <service id="Alaska\SyliusSmartpayPlugin\Form\Type\SyliusGatewayConfigurationType">
+            <tag name="sylius.gateway_configuration_type" type="smartpay_payment" label="Smartpay Payment" />
+            <tag name="form.type" />
+        </service>
+
+        <service id="Alaska\SyliusSmartpayPlugin\Payum\Action\CaptureAction" public="true">
+            <argument type="service" id="sylius.http_client" />
+            <tag name="payum.action" factory="smartpay_payment" alias="payum.action.capture" />
+        </service>
+
+        <service id="Alaska\SyliusSmartpayPlugin\Payum\Action\ConvertPaymentAction" public="true" >
+            <tag name="payum.action" factory="smartpay_payment" alias="payum.action.convert_payment"/>
+        </service>
+
+        <service id="Alaska\SyliusSmartpayPlugin\Payum\Action\CreatePaymentAction" public="true" >
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="sylius.http_client" />
+            <argument type="service" id="alaska_smartpay_merchant_service" />
+            <argument>%sylius_smartpay.smartpay_base_url%</argument>
+            <tag name="payum.action" factory="smartpay_payment" alias="payum.action.create_payment"/>
+        </service>
+
+        <service id="Alaska\SyliusSmartpayPlugin\Repository\PaymentRepository" parent="sylius.repository.payment" public="true">
+        </service>
+
+    </services>
+
+</container>

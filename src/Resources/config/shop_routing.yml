@@ -1,0 +1,5 @@
+alaska_sylius_smartpay_plugin_payment_webhook:
+  path: /api/payment/webhook
+  methods: [GET, POST]
+  defaults:
+    _controller: Alaska\SyliusSmartpayPlugin\Controller\WebhookController::paymentWebhookAction
